@@ -17,7 +17,9 @@ The active profile is recorded in `PROJECT.md`. Start with **Lightweight** unles
 | Releases | Flexible, verified | Green gates before production | Green gates and explicit release approval |
 | Records | Brief decisions | Significant decisions documented | Formal risk/change evidence |
 
-Automatic Copilot PR review is recommended for every profile where available, but must be enabled separately in GitHub (template files do not copy rulesets). Keep routine Lightweight feedback advisory, address substantive findings, and use additional independent scrutiny for high-risk changes. A Copilot comment does not equal formal approval or different-provider review.\n\nA profile is a minimum, not a substitute for assessing risk. Critical safeguards apply in every profile. Do not treat a prototype profile as permission to expose unsafe production changes.
+Automatic Copilot PR review is recommended for every profile where available, but must be enabled separately in GitHub (template files do not copy rulesets). Keep routine Lightweight feedback advisory, address substantive findings, and use additional independent scrutiny for high-risk changes. A Copilot comment does not equal formal approval or different-provider review.
+
+A profile is a minimum, not a substitute for assessing risk. Critical safeguards apply in every profile. Do not treat a prototype profile as permission to expose unsafe production changes.
 
 ## Change classification
 - **Routine:** Narrow, reversible, within approved scope; focused review and proportionate tests. Manager may merge if authorised.
@@ -27,7 +29,9 @@ Automatic Copilot PR review is recommended for every profile where available, bu
 Classify by highest risk, not diff size. Splitting work cannot avoid a review gate. Prefer a reviewer who did not implement the change; a different AI provider is preferable for mandatory reviews. Copilot review can supplement or, for lower-risk eligible changes, serve as an independent review execution, but does not prove provider independence. For security, governance, secrets and CI-permission changes, require a different-provider review or explicit Owner acceptance of the exact change and risks. A review comment is not necessarily a GitHub approval.
 
 ## Normal workflow
-Objective → task → implementation → tests → appropriate review → merge → verify deployment (if any).
+Objective → feature branch → implementation and focused tests → cohesive PR into main → appropriate review → merge → verify deployment (if any).
+
+Prefer one PR per completed feature or meaningful deliverable, not per implementation step. Keep unrelated or high-risk work separate, and avoid long-lived branches. In Lightweight projects, feature branches and PRs are preferred but not mandatory for trivial edits, subject to actual branch rules. Copilot review normally runs on a PR targeting main rather than on each development commit.
 
 PRs should state what changed, why, checks run, review class and any remaining risks. Check the current head before merge; changed code may need re-testing and re-review. Resolve important findings, and never merge failing required checks without explicit exception. Owner approval is required for material product/architecture, costs, security/privacy policy, destructive changes and changes to governance; it is not required again for routine execution of an already approved decision.
 
