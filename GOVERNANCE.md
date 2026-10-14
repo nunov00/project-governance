@@ -32,6 +32,18 @@ A profile is a minimum, not a substitute for assessing risk. Critical safeguards
 
 Classify by highest risk, not diff size. Splitting work cannot avoid a review gate. Prefer a reviewer who did not implement the change; a different AI provider is preferable for mandatory reviews. Copilot review can supplement or, for lower-risk eligible changes, serve as an independent review execution, but does not prove provider independence. For security, substantive governance controls, secrets and CI-permission changes, require a different-provider review or explicit Owner acceptance of the exact change and risks. A review comment is not necessarily a GitHub approval.
 
+## Multi-agent handoffs and architecture review
+
+Agents may divide work across providers using GitHub as the shared source of truth. The Manager coordinates boundaries and integration; an agent must not assume another agent has access to its chat history. Handoffs provide the objective, relevant code/decisions, constraints, acceptance criteria and delivery expectations **in proportion to complexity**. Read existing interfaces and ADRs before implementing; avoid simultaneous conflicting edits. Record durable reasons for non-obvious architectural choices, not transcripts of every discussion. A reviewer must not review their own work as independent review.
+
+| | Lightweight | Standard | Strict |
+| --- | --- | --- | --- |
+| Handoff | Brief issue/PR description or equivalent; link relevant context | Explicit interfaces, dependencies, acceptance criteria and integration owner | Traceable responsibilities, contracts and validation evidence |
+| Architecture challenge | Optional for routine/reversible choices; seek independent challenge for significant or hard-to-reverse proposals | Independent challenge before material architecture implementation; record trade-offs and resolution | Independent different-provider review of material proposals before implementation, with risk evidence |
+| Decision record | Short PR note or ADR for non-obvious/material choices | Record significant decisions, alternatives and rationale | Formal decision, risk, approval and review trail |
+
+Claude or another independent agent may challenge architecture assumptions and alternatives; Copilot PR feedback can supplement this by checking implementation and documentation, but does not automatically constitute a comprehensive architecture review or different-provider review. The Manager reconciles findings; Owner approval remains required for material architecture, cost and other reserved decisions. If a required reviewer or tool is unavailable, do not misrepresent the review: defer the gated change or seek an explicit Owner exception where permitted. Do not impose a review on every small decision, duplicate existing documentation or turn a single feature into many handoff PRs. Existing mandatory-change safeguards take precedence regardless of profile.
+
 ## Normal workflow
 Objective → feature branch → implementation and focused tests → cohesive PR into main → appropriate review → merge → verify deployment (if any).
 
