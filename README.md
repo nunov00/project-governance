@@ -5,7 +5,7 @@ A small, reusable governance template for projects developed with human and AI c
 ## Start a new project
 
 1. In GitHub, select **Use this template → Create a new repository**.
-2. Edit **[PROJECT.md](PROJECT.md)**: name, purpose, owner, technology, checks and deployment. **Lightweight** is the default.
+2. Edit **[PROJECT.md](PROJECT.md)**: name, purpose, owner, technology, checks, deployment and available tools/budget. **Lightweight** is the default.
 3. Ask your AI manager or developer to read **[AGENTS.md](AGENTS.md)** and **[GOVERNANCE.md](GOVERNANCE.md)** before making changes.
 4. Enable **automatic GitHub Copilot code reviews** for pull requests if available to your account/repository. Check repository **Settings → Rules → Rulesets** (or the available Copilot code-review settings); choose automatic review and keep it advisory for routine Lightweight work. Settings and availability can vary.
 5. Start building. Add CI and branch protection appropriate to the project's risk. **Template files do not copy repository rulesets or automatically enable Copilot reviews.**
@@ -48,6 +48,9 @@ A transition must update real CI, branch protections and review/release controls
 - **README.md** — this quick-start guide.
 
 ## Working principles
+
+During product development, favour fast experiments, cohesive feature delivery and autonomous refinements within approved objectives. Escalate genuinely new scope or risk, not every implementation choice. Use the available AI subscriptions and free infrastructure first; verify limits and obtain approval before introducing costs.
+
 
 The Owner controls direction and significant decisions. The Manager coordinates and executes routine work autonomously within approved scope. Workers implement; reviewers challenge changes. Use the smallest process that safely fits the risk. Keep important decisions in GitHub rather than relying on chat history.
 
