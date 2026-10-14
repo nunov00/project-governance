@@ -5,6 +5,10 @@ The repository is the source of truth. The Owner decides product direction, mate
 
 Maximise progress within approved scope. During product development, prioritise working software, rapid experimentation and short feedback cycles. Agents may refine implementation, UX details and technical approaches within approved objectives; complete reasonable fixes and refinements without treating each discovery as new scope. Avoid excessive planning, documentation, approvals and review cycles. Do not repeatedly seek approval for implementation details, testing, review remediation or an already authorised merge. Do not expand scope or bypass gates. Keep solutions proportionate and avoid bureaucracy.
 
+## Shared resource stewardship
+
+GitHub and Cloudflare are used across multiple projects. Architecture and automation decisions should account for aggregate CI, build, deployment, storage, request and background-job consumption. Prefer efficient solutions without compromising product outcomes, security, reliability or maintainability. Verify current quota scope and usage; obtain Owner approval before adding paid capacity. See `PROJECT.md` for planning constraints.
+
 ## Profiles
 The active profile is recorded in `PROJECT.md`. Start with **Lightweight** unless project risks justify stronger controls; reassess as risks evolve, including before production. Production does not automatically require Standard for a low-risk utility.
 
