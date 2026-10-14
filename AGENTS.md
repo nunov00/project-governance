@@ -10,3 +10,5 @@ Read `PROJECT.md` (including available tools and cost limits) and `GOVERNANCE.md
 - Never claim tests, independent review, approvals or deployment succeeded without verifying them.
 - Prefer simple, maintainable solutions and reversible steps. Group related work into cohesive feature PRs rather than opening a PR for each small step. Keep unrelated or high-risk changes separate. Report outcomes and blockers concisely.
 - Prefer a feature branch for related development, run focused tests as you go, and open one PR targeting main when the feature is ready for review. Avoid unnecessarily long-lived branches; trivial edits may follow a simpler path when allowed.
+
+- Treat GitHub and Cloudflare capacity as shared across projects. Minimise unnecessary CI runs, builds, deployments, storage, requests and background jobs without compromising quality or outcomes. Check current limits and aggregate usage before making significant architecture decisions.
