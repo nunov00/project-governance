@@ -3,7 +3,7 @@
 ## Principles
 The repository is the source of truth. The Owner decides product direction, material architecture, costs, privacy/security policy and governance. The Manager (normally ChatGPT) plans, coordinates and handles routine technical decisions. Workers implement; reviewers challenge changes. Roles are interchangeable, but self-review is not independent review.
 
-Maximise progress within approved scope. Do not repeatedly seek approval for implementation details, testing, review remediation or an already authorised merge. Do not expand scope or bypass gates. Keep solutions proportionate and avoid bureaucracy.
+Maximise progress within approved scope. During product development, prioritise working software, rapid experimentation and short feedback cycles. Agents may refine implementation, UX details and technical approaches within approved objectives; complete reasonable fixes and refinements without treating each discovery as new scope. Avoid excessive planning, documentation, approvals and review cycles. Do not repeatedly seek approval for implementation details, testing, review remediation or an already authorised merge. Do not expand scope or bypass gates. Keep solutions proportionate and avoid bureaucracy.
 
 ## Profiles
 The active profile is recorded in `PROJECT.md`. Start with **Lightweight** unless project risks justify stronger controls; reassess as risks evolve, including before production. Production does not automatically require Standard for a low-risk utility.
@@ -24,16 +24,16 @@ A profile is a minimum, not a substitute for assessing risk. Critical safeguards
 ## Change classification
 - **Routine:** Narrow, reversible, within approved scope; focused review and proportionate tests. Manager may merge if authorised.
 - **Integration:** Activates an approved feature or significant behaviour; review the combined feature, tests and deployment impact before merge. Staged inactive scaffolding may be reviewed at the integration gate.
-- **Mandatory:** Governance or major architecture; secrets, security/privacy/authentication; permissions or weakened CI gates; destructive/data-loss changes; major dependencies/costs; production publication safeguards. Requires independent review and Owner approval for decisions reserved to the Owner.
+- **Mandatory:** Material changes to governance authority, review requirements or safeguards, or major architecture; secrets, security/privacy/authentication; permissions or weakened CI gates; destructive/data-loss changes; major dependencies/costs; production publication safeguards. Requires independent review and Owner approval for decisions reserved to the Owner.
 
-Classify by highest risk, not diff size. Splitting work cannot avoid a review gate. Prefer a reviewer who did not implement the change; a different AI provider is preferable for mandatory reviews. Copilot review can supplement or, for lower-risk eligible changes, serve as an independent review execution, but does not prove provider independence. For security, governance, secrets and CI-permission changes, require a different-provider review or explicit Owner acceptance of the exact change and risks. A review comment is not necessarily a GitHub approval.
+Classify by highest risk, not diff size. Splitting work cannot avoid a review gate. Prefer a reviewer who did not implement the change; a different AI provider is preferable for mandatory reviews. Copilot review can supplement or, for lower-risk eligible changes, serve as an independent review execution, but does not prove provider independence. For security, substantive governance controls, secrets and CI-permission changes, require a different-provider review or explicit Owner acceptance of the exact change and risks. A review comment is not necessarily a GitHub approval.
 
 ## Normal workflow
 Objective → feature branch → implementation and focused tests → cohesive PR into main → appropriate review → merge → verify deployment (if any).
 
 Prefer one PR per completed feature or meaningful deliverable, not per implementation step. Keep unrelated or high-risk work separate, and avoid long-lived branches. In Lightweight projects, feature branches and PRs are preferred but not mandatory for trivial edits, subject to actual branch rules. Copilot review normally runs on a PR targeting main rather than on each development commit.
 
-PRs should state what changed, why, checks run, review class and any remaining risks. Check the current head before merge; changed code may need re-testing and re-review. Resolve important findings, and never merge failing required checks without explicit exception. Owner approval is required for material product/architecture, costs, security/privacy policy, destructive changes and changes to governance; it is not required again for routine execution of an already approved decision.
+PRs should state what changed, why, checks run, review class and any remaining risks. Check the current head before merge; changed code may need re-testing and re-review. Resolve important findings, and never merge failing required checks without explicit exception. Owner approval is required for material product/architecture, costs, security/privacy policy, destructive changes and substantive changes to governance controls; it is not required again for routine execution of an already approved decision.
 
 ## Changing profiles
 The Owner may approve a profile change at any stage. The Manager proposes a short checklist and implements the change in one governed PR:
@@ -44,4 +44,4 @@ The Owner may approve a profile change at any stage. The Manager proposes a shor
 Reassess **Lightweight → Standard** before production or when risk grows: confirm tests, CI, branch protection, reviews, secrets management, deployment and rollback. **Standard → Strict** adds risk-specific controls. Downgrades are allowed for genuinely isolated work, but must not weaken protections for existing production branches, deployments or data. Profile changes never silently happen on an agent's initiative.
 
 ## Improve gradually
-Record important decisions in a PR or short ADR. Amend this framework only when a concrete need emerges. Keep project-specific policies in `PROJECT.md` or separate project documentation.
+Routine editorial clarifications to governance documents may use proportionate review if they do not alter decision rights, gates or safeguards; substantive policy changes remain mandatory. Record important decisions in a PR or short ADR. Amend this framework only when a concrete need emerges. Keep project-specific policies in `PROJECT.md` or separate project documentation.
