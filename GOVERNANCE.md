@@ -6,18 +6,18 @@ The repository is the source of truth. The Owner decides product direction, mate
 Maximise progress within approved scope. Do not repeatedly seek approval for implementation details, testing, review remediation or an already authorised merge. Do not expand scope or bypass gates. Keep solutions proportionate and avoid bureaucracy.
 
 ## Profiles
-The active profile is recorded in `PROJECT.md`.
+The active profile is recorded in `PROJECT.md`. Start with **Lightweight** unless project risks justify stronger controls; reassess as risks evolve, including before production. Production does not automatically require Standard for a low-risk utility.
 
 | | Lightweight | Standard | Strict |
 |---|---|---|---|
 | Use | Prototype / experiment | Normal development / production | High-risk or regulated work |
 | Branch and PR | Recommended | Required | Required |
 | Checks | Focused, relevant tests | Automated relevant tests and build | Extended testing and security checks |
-| Review | Focused self-review for routine work | Reviewer for material integration | Independent reviewer for material changes |
+| Review | Focused self-review and advisory Copilot PR review where available | Reviewer for material integration | Independent reviewer for material changes |
 | Releases | Flexible, verified | Green gates before production | Green gates and explicit release approval |
 | Records | Brief decisions | Significant decisions documented | Formal risk/change evidence |
 
-A profile is a minimum, not a substitute for assessing risk. Critical safeguards apply in every profile. Do not treat a prototype profile as permission to expose unsafe production changes.
+Automatic Copilot PR review is recommended for every profile where available, but must be enabled separately in GitHub (template files do not copy rulesets). Keep routine Lightweight feedback advisory, address substantive findings, and use additional independent scrutiny for high-risk changes. A Copilot comment does not equal formal approval or different-provider review.\n\nA profile is a minimum, not a substitute for assessing risk. Critical safeguards apply in every profile. Do not treat a prototype profile as permission to expose unsafe production changes.
 
 ## Change classification
 - **Routine:** Narrow, reversible, within approved scope; focused review and proportionate tests. Manager may merge if authorised.
@@ -37,7 +37,7 @@ The Owner may approve a profile change at any stage. The Manager proposes a shor
 2. Adjust actual CI, branch rules, review requirements and release controls to match.
 3. Verify the controls work; record any gaps and obtain Owner approval for exceptions.
 
-Recommend **Lightweight → Standard** before production: confirm tests, CI, branch protection, reviews, secrets management, deployment and rollback. **Standard → Strict** adds risk-specific controls. Downgrades are allowed for genuinely isolated work, but must not weaken protections for existing production branches, deployments or data. Profile changes never silently happen on an agent's initiative.
+Reassess **Lightweight → Standard** before production or when risk grows: confirm tests, CI, branch protection, reviews, secrets management, deployment and rollback. **Standard → Strict** adds risk-specific controls. Downgrades are allowed for genuinely isolated work, but must not weaken protections for existing production branches, deployments or data. Profile changes never silently happen on an agent's initiative.
 
 ## Improve gradually
 Record important decisions in a PR or short ADR. Amend this framework only when a concrete need emerges. Keep project-specific policies in `PROJECT.md` or separate project documentation.
