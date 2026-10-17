@@ -106,12 +106,24 @@ Prefer one PR per completed feature or meaningful deliverable, not per implement
 
 **Production checkpoint:** before the first production deployment, the Manager must stop and propose a profile assessment. The Owner either approves a transition or records in `PROJECT.md` why the current profile stays.
 
-The Owner may approve a profile change at any stage. The Manager implements it in one PR (classified mandatory):
-1. Record old/new profile, reason and stage in `PROJECT.md`.
-2. Apply the matching GitHub settings below and any CI changes.
-3. Verify the controls work (for example, a test PR is blocked without approval); record gaps and Owner-approved exceptions.
+The Owner may change profile at any stage; it is an Owner decision, never an agent's. The Manager then does the whole transition in one PR (classified mandatory, with the `Owner decision:` line) plus the GitHub settings changes, in this order.
 
-Downgrades are allowed for genuinely isolated work but must not weaken protections for existing production branches, deployments or data. Profile changes never happen on an agent's initiative.
+**Moving up (for example Lightweight → Standard, or Standard → Strict)**
+1. In the transition PR: update `Governance profile` and `Stage` in `PROJECT.md`, add a row to the profile history, and set `Material paths` for the project.
+2. In the same PR, if not already present: copy `templates/github/workflows/governance-approval.yml` into `.github/workflows/`, and add the CI jobs the new profile requires (tests and build; security checks for Strict).
+3. Merge it. The check reads the profile from `main`, so the transition PR is judged under the old profile, and the new rules apply from the next PR.
+4. After the merge: create the `review-waiver` label, then change the ruleset as in **GitHub settings per profile** (require a PR, add `governance/approval` and the CI jobs as required checks, Owner on the bypass list). Add the required checks after they have run once, so GitHub suggests their exact names.
+5. Update open PRs: add `Review class:` and `Author agent:` to their descriptions, and get approvals where the new profile needs them.
+6. Verify: a test PR marked `material` (Standard) or `routine` (Strict) with no approval is blocked; then close it. Report the result to the Owner.
+
+**Moving down (for example Standard → Lightweight)**
+1. In the transition PR: update `Governance profile` and `Stage` in `PROJECT.md` and add a row to the profile history, including why the lower profile is now enough. As a mandatory change under the current profile, it still needs its approval.
+2. Merge it. From then on, the approval check passes every PR automatically, so the workflow can stay in place for a later move back up. Remove it only if CI minutes matter.
+3. After the merge: relax the ruleset to the lower profile's settings. Keep "block force pushes and deletion" in every profile.
+4. Close any open `review-waiver` issues, since they are no longer needed.
+5. If the project already runs in production, keep the protections that guard production branches, deployments and data (for example CI on `main` and release checks), and record that in the profile history. A downgrade relaxes approvals, not safety.
+
+If any step can't be completed (for example, the ruleset can't be changed), say so in the PR and to the Owner rather than reporting the transition as done.
 
 ## GitHub settings per profile
 Template files do not copy rulesets or enable Copilot; apply these in **Settings → Rules → Rulesets** for the default branch.
