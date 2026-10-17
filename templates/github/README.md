@@ -15,8 +15,10 @@ Files here are **not active** in the template repository. Copy them in when a pr
 What it checks, on each PR update or comment:
 - **Lightweight:** always passes.
 - **Standard:** routine PRs pass, unless they touch a material path. Material and mandatory PRs need an approval or (except mandatory) an open waiver.
-- **Strict:** every PR needs an approval or (except mandatory) an open waiver. Mandatory changes need a reviewer from a different provider than the author.
+- **Strict:** every PR needs an approval or (except mandatory) an open waiver.
+- **Waivers** count only if the issue is open, labelled `review-waiver`, not past its `Ends:` date, and the PR's branch matches its `Branches:` globs.
+- **Control overrides** in `PROJECT.md` are not read. If an override changes what needs approval, change this workflow or the ruleset in the same PR. Mandatory changes need a reviewer from a different provider than the author.
 
 An approval counts only if it names the current head commit, the author agent declared in the PR, and a different reviewer (not Copilot). Owner approvals given in chat are recorded by the agent as `reviewer: Owner (chat)`; a bypass goes through the ruleset.
 
-Limits: profile and material paths are read from the base branch, so a PR cannot loosen its own gate. Comments and issues all come from the Owner's account, so names are self-declared; the check catches mistakes, not deliberate misuse. Each run is a few seconds of Actions time, triggered only by PR events and PR comments.
+Limits: profile and material paths are read from the base branch, so a PR cannot loosen its own gate. Comments and issues all come from the Owner's account, so names are self-declared; the check catches mistakes, not deliberate misuse. The check runs on PR updates and comments, not on a schedule, so a PR that passed under a waiver keeps its green status after the waiver ends until it is next updated; close the waiver issue to end it promptly. Each run is a few seconds of Actions time, triggered only by PR events and PR comments.
