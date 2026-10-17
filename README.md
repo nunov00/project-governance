@@ -34,7 +34,7 @@ The full list of controls per profile is in [GOVERNANCE.md](GOVERNANCE.md#profil
 
 AI agents usually act through the Owner's GitHub account, so GitHub's own approvals can't be used. Instead, a reviewing agent (different from the author) posts an `APPROVED · …` comment naming the head commit. Copilot comments are advisory and never count as approvals. For Standard and Strict, copy the approval check in [`templates/github/`](templates/github/README.md) to enforce this.
 
-The Owner can always bypass: per PR through the ruleset bypass, or for a whole feature with a **review waiver** issue that PRs reference. Details are in [GOVERNANCE.md → Waivers and bypasses](GOVERNANCE.md#waivers-and-bypasses).
+The Owner approves, bypasses and grants waivers in chat; the agent records each one on GitHub. A bypass covers one PR; a **review waiver** issue covers a whole feature and PRs reference it. Details are in [GOVERNANCE.md → Waivers and bypasses](GOVERNANCE.md#waivers-and-bypasses).
 
 ## What the files do
 

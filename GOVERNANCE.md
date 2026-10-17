@@ -56,7 +56,7 @@ Rules:
 - The reviewer must be a different agent from the author. For mandatory changes in Strict, it must be a different provider.
 - An approval covers only the named commit. Any later push needs a new approval.
 - Copilot PR review never counts as an approval: GitHub only lets it leave comments, it reviews the diff rather than the design, and it is not independent if it helped write the code.
-- The Owner can approve with the same comment format (`reviewer: Owner`) or by bypassing (below).
+- The Owner usually approves in chat rather than on GitHub. The agent then records it on the PR in the same format (`reviewer: Owner (chat)`), followed by the Owner's words and the date. An Owner approval covers the commit that was current when it was given.
 - Never post an approval you did not perform, or on behalf of another agent.
 
 The agent named in a comment is self-declared, since comments come from the same account. This convention guards against mistakes, not deliberate misuse. Standard and Strict projects can enforce it with the approval check in [`templates/github/`](templates/github/README.md).
@@ -64,15 +64,17 @@ The agent named in a comment is self-declared, since comments come from the same
 ## Waivers and bypasses
 The Owner can always bypass a gate, either for a single PR or for a defined scope.
 
-**Single PR:** the Owner merges using the ruleset bypass, and the PR description records `Bypass: <reason>`.
+The Owner may grant either in chat; the agent then records it on GitHub, quoting the Owner's words and the date, before relying on it.
 
-**Review waiver (for a feature or other scope):** a GitHub issue labelled `review-waiver`, opened or approved by the Owner, stating:
+**Single PR:** the PR is merged using the ruleset bypass (by the Owner, or by an agent the Owner told to), and the PR description records `Bypass: <reason> (Owner, <date>)`.
+
+**Review waiver (for a feature or other scope):** a GitHub issue labelled `review-waiver`, opened by the Owner or by an agent on the Owner's instruction, stating:
 - **Scope:** the feature, branch or paths it covers;
 - **Waives:** approvals only (CI checks still apply unless stated);
 - **Reason;**
 - **Ends:** a date, or when the feature merges, whichever comes first.
 
-PRs within scope reference it (`Waiver: #<issue>`) and may merge without approval. Closing the issue ends the waiver. When it closes, list the PRs merged under it in the issue so the Owner can choose to review them afterwards. A waiver never covers mandatory-class changes. Agents must not create, widen or extend waivers, and never bypass on their own initiative; report any merge made under a waiver or bypass.
+PRs within scope reference it (`Waiver: #<issue>`) and may merge without approval. Closing the issue ends the waiver. When it closes, list the PRs merged under it in the issue so the Owner can choose to review them afterwards. A waiver never covers mandatory-class changes. Agents must not create, widen or extend waivers, or bypass, on their own initiative; report any merge made under a waiver or bypass.
 
 ## Multi-agent handoffs and architecture review
 Agents may divide work across providers using GitHub as the shared source of truth. The Manager coordinates boundaries and integration; an agent must not assume another agent has access to its chat history. Handoffs give the objective, relevant code/decisions, constraints, acceptance criteria and delivery expectations in proportion to complexity. Read existing interfaces and ADRs before implementing; avoid simultaneous conflicting edits.
