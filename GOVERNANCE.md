@@ -21,7 +21,7 @@ The active profile is recorded in `PROJECT.md`. A profile is a preset of the con
 | Who may approve | — | An agent other than the author, or the Owner | An agent other than the author (different provider for mandatory changes), or the Owner |
 | Copilot PR review | Optional, advisory | Recommended, advisory | Recommended; substantive findings resolved |
 | Required CI checks | None; run focused tests locally | Tests and build | Tests, build and security checks |
-| Mandatory-class changes | Owner acceptance recorded in the PR | Approval and Owner acceptance | Different-provider approval and Owner acceptance |
+| Mandatory-class changes | Owner decision recorded | Agent approval and Owner decision recorded | Different-provider agent approval and Owner decision recorded |
 | Waivers | Not needed | Allowed | Allowed |
 | Release | Flexible, verified | Green checks before production | Green checks and explicit Owner release approval |
 | Records | Brief PR notes | Significant decisions documented | Formal risk, decision and review trail |
@@ -41,7 +41,7 @@ Every PR into `main` states its class in the description (`Review class: routine
   - a user-visible production behaviour change that is hard to reverse (not behind a disabled flag);
   - a significant or hard-to-reverse architectural choice;
   - any path listed under **Material paths** in `PROJECT.md`.
-- **Mandatory:** material changes to governance authority, approval requirements or safeguards; secrets handling; weakening CI gates or permissions; destructive or data-loss changes; major architecture, dependencies or costs; production publication safeguards. Mandatory changes always need Owner acceptance and cannot be covered by a waiver.
+- **Mandatory:** material changes to governance authority, approval requirements or safeguards; secrets handling; weakening CI gates or permissions; destructive or data-loss changes; major architecture, dependencies or costs; production publication safeguards. Mandatory changes always need a recorded Owner decision (see Approvals) and cannot be covered by a waiver.
 
 Staged inactive scaffolding may be classified at the point it is activated (the integration PR), provided it has no effect until then.
 
@@ -56,9 +56,10 @@ APPROVED · reviewer: <agent> (<provider>) · author: <agent> (<provider>) · co
 Rules:
 - The implementing agent names itself in the PR description (`Author agent: <agent> (<provider>)`).
 - The reviewer must be a different agent from the author. For mandatory changes in Strict, it must be a different provider.
+- **The Owner steers; agents review code.** The Owner is never asked to review or approve code. For a mandatory change, the Owner decides *what* is done (for example "yes, add the paid service" or "go ahead with the new governance rule"), in chat, before or during the work. The agent records it in the PR description as `Owner decision: "<the Owner's words>" (<date>)`, or links the issue or earlier PR where it was recorded. One decision can cover several PRs that carry it out. Code review stays with the agent reviewers.
 - An approval covers only the named commit. Any later push needs a new approval.
 - Copilot PR review never counts as an approval: GitHub only lets it leave comments, it reviews the diff rather than the design, and it is not independent if it helped write the code.
-- The Owner usually approves in chat rather than on GitHub. The agent then records it on the PR in the same format (`reviewer: Owner (chat)`), followed by the Owner's words and the date. An Owner approval covers the commit that was current when it was given.
+- The Owner may approve any PR directly, with or without an agent review, usually in chat. That approval stands on its own, for mandatory changes too, and also counts as the Owner decision. The agent then records it on the PR in the same format (`reviewer: Owner (chat)`), followed by the Owner's words and the date. An Owner approval covers the commit that was current when it was given.
 - Never post an approval you did not perform, or on behalf of another agent.
 
 The agent named in a comment is self-declared, since comments come from the same account. This convention guards against mistakes, not deliberate misuse. Standard and Strict projects can enforce it with the approval check in [`templates/github/`](templates/github/README.md).

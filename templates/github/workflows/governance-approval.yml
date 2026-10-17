@@ -134,6 +134,10 @@ jobs:
                 if (needDifferentProvider && !byOwner && provider(reviewer) === provider(authorAgent)) {
                   reason = 'Mandatory change in Strict needs a different-provider reviewer'; continue;
                 }
+                // The Owner's own approval stands alone; an agent approval of a mandatory change also needs the recorded Owner decision.
+                if (!byOwner && effectiveClass === 'mandatory' && !declared('Owner decision')) {
+                  reason = 'Mandatory change: PR description must record "Owner decision: ..."'; continue;
+                }
                 return setStatus('success', `Approved by ${reviewer} for ${commit}`);
               }
               return setStatus('failure', `${profile}/${effectiveClass}: ${waiverProblem ? `${waiverProblem}; ` : ''}${reason}`);
