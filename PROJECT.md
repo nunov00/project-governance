@@ -14,7 +14,7 @@
 - **Control overrides:** None
 - **Standing delegations:** None
 
-Stage is one of PoC, Pilot or Production; profile is Lightweight, Standard or Strict (see `GOVERNANCE.md` → Profiles and controls). Keep the profile word first on its line: the approval check reads it. Material paths are backtick-quoted globs that always make a PR material. Control overrides change one control of the profile, for example: "Approvals: none until pilot review on 2026-11-30 — Owner, reason". Review waivers for a feature are GitHub issues labelled `review-waiver`, not entries here.
+Stage is one of PoC, Pilot or Production; profile is Lightweight, Standard or Strict (see `GOVERNANCE.md` → Profiles and controls). Keep the profile word first on its line: the approval check reads it. Material paths are backtick-quoted globs that always make a PR material. Control overrides are lasting changes to one control of the profile, for example: "Release approval: as in Strict (Owner, 2026-10-17, customer-facing launch)". An override does not change any check by itself; the same PR must make the matching CI or GitHub settings change (see `GOVERNANCE.md` → Profiles and controls). Temporary exemptions, such as no approvals for one feature, are review waivers (GitHub issues labelled `review-waiver`), not entries here.
 
 Reassess the profile before the first production deployment. Changing this file does not configure GitHub rules, CI or Copilot; see `GOVERNANCE.md` → GitHub settings per profile.
 

@@ -81,15 +81,27 @@ jobs:
             if (profile === 'standard' && effectiveClass === 'routine')
               return setStatus('success', 'Standard: routine change, no approval required');
 
-            // --- Waiver (never for mandatory changes).
+            // --- Waiver: open, labelled, not expired, and covering this PR's branch (never for mandatory changes).
+            let waiverProblem = '';
             const waiverRef = declared('Waiver').match(/#(\d+)/);
-            if (waiverRef && effectiveClass !== 'mandatory') {
+            if (waiverRef && effectiveClass === 'mandatory') waiverProblem = 'waivers never cover mandatory changes';
+            else if (waiverRef) {
               try {
                 const { data: issue } = await github.rest.issues.get({ owner, repo, issue_number: Number(waiverRef[1]) });
-                const labelled = issue.labels.some((l) => (l.name || l) === 'review-waiver');
-                if (!issue.pull_request && issue.state === 'open' && labelled)
-                  return setStatus('success', `Covered by review waiver #${issue.number}`);
-              } catch (e) { /* fall through to approval */ }
+                const text = issue.body || '';
+                const ends = (text.match(/^\s*Ends:\s*(\d{4}-\d{2}-\d{2})\b/im) || [])[1];
+                const branchLine = (text.match(/^\s*Branches:\s*(.+)$/im) || [])[1] || '';
+                const branchGlobs = (branchLine.match(/`([^`]+)`/g) || []).map((b) => b.slice(1, -1));
+                const today = new Date().toISOString().slice(0, 10);
+                if (issue.pull_request) waiverProblem = `#${issue.number} is not an issue`;
+                else if (!issue.labels.some((l) => (l.name || l) === 'review-waiver')) waiverProblem = `#${issue.number} lacks the review-waiver label`;
+                else if (issue.state !== 'open') waiverProblem = `waiver #${issue.number} is closed`;
+                else if (!ends) waiverProblem = `waiver #${issue.number} has no "Ends: YYYY-MM-DD"`;
+                else if (today > ends) waiverProblem = `waiver #${issue.number} ended ${ends}`;
+                else if (!branchGlobs.length) waiverProblem = `waiver #${issue.number} has no "Branches:"`;
+                else if (!branchGlobs.some((g) => globToRegex(g).test(pr.head.ref))) waiverProblem = `waiver #${issue.number} does not cover branch ${pr.head.ref}`;
+                else return setStatus('success', `Covered by review waiver #${issue.number} (ends ${ends})`);
+              } catch (e) { waiverProblem = `waiver #${waiverRef[1]} not found`; }
             }
 
             // --- Approval comment for the current head commit.
@@ -115,4 +127,4 @@ jobs:
               }
               return setStatus('success', `Approved by ${reviewer} for ${commit}`);
             }
-            return setStatus('failure', `${profile}/${effectiveClass}: ${reason}`);
+            return setStatus('failure', `${profile}/${effectiveClass}: ${waiverProblem ? `${waiverProblem}; ` : ''}${reason}`);
