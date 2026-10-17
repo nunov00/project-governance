@@ -9,7 +9,9 @@ Maximise progress within approved scope. During product development, prioritise 
 GitHub and Cloudflare are used across multiple projects. Architecture and automation decisions should account for aggregate CI, build, deployment, storage, request and background-job consumption. Prefer efficient solutions without compromising product outcomes, security, reliability or maintainability. Verify current quota scope and usage; obtain Owner approval before adding paid capacity. See `PROJECT.md` for planning constraints.
 
 ## Profiles and controls
-The active profile is recorded in `PROJECT.md`. A profile is a preset of the controls below; `PROJECT.md` may override individual controls with an Owner-approved reason. This table is the single definition of what each profile requires.
+The active profile is recorded in `PROJECT.md`. A profile is a preset of the controls below, and this table is the single definition of what each profile requires.
+
+`PROJECT.md` may record **control overrides**: lasting, Owner-approved changes to one control, such as "Standard, but release approval as in Strict". An override does not change any check or GitHub setting by itself. The PR that adds it must also make the matching CI or ruleset change (or state that none is needed) and add a row to the profile history. For a temporary exemption, such as no approvals during one feature, use a review waiver instead.
 
 | Control | Lightweight | Standard | Strict |
 |---|---|---|---|
@@ -68,13 +70,19 @@ The Owner may grant either in chat; the agent then records it on GitHub, quoting
 
 **Single PR:** the PR is merged using the ruleset bypass (by the Owner, or by an agent the Owner told to), and the PR description records `Bypass: <reason> (Owner, <date>)`.
 
-**Review waiver (for a feature or other scope):** a GitHub issue labelled `review-waiver`, opened by the Owner or by an agent on the Owner's instruction, stating:
-- **Scope:** the feature, branch or paths it covers;
-- **Waives:** approvals only (CI checks still apply unless stated);
-- **Reason;**
-- **Ends:** a date, or when the feature merges, whichever comes first.
+**Review waiver (for a feature or other scope):** a GitHub issue labelled `review-waiver`, opened by the Owner or by an agent on the Owner's instruction. Its body uses these lines:
 
-PRs within scope reference it (`Waiver: #<issue>`) and may merge without approval. Closing the issue ends the waiver. When it closes, list the PRs merged under it in the issue so the Owner can choose to review them afterwards. A waiver never covers mandatory-class changes. Agents must not create, widen or extend waivers, or bypass, on their own initiative; report any merge made under a waiver or bypass.
+```
+Scope: <feature or purpose>
+Branches: `<branch glob>`, ...
+Waives: approvals (CI checks still apply)
+Reason: <why>
+Ends: <YYYY-MM-DD>
+```
+
+A waiver is identified by its issue number, which is never reused. It applies only while all of these hold: the issue is open, it has the `review-waiver` label, today is on or before `Ends`, and the PR's branch matches one of `Branches`. So an old waiver cannot be picked up by mistake: once it is closed or past its end date, or the PR comes from another branch, the approval check ignores it. Use a branch name specific to the feature (for example `feature/login*`, not `feature/*`).
+
+PRs within scope reference it (`Waiver: #<issue>`) and may merge without approval. The waiver ends at its end date or when the feature merges, whichever comes first; the agent closes the issue when the feature merges. When it closes, list the PRs merged under it in the issue so the Owner can choose to review them afterwards. A waiver never covers mandatory-class changes. Agents must not create, widen or extend waivers, or bypass, on their own initiative; report any merge made under a waiver or bypass.
 
 ## Multi-agent handoffs and architecture review
 Agents may divide work across providers using GitHub as the shared source of truth. The Manager coordinates boundaries and integration; an agent must not assume another agent has access to its chat history. Handoffs give the objective, relevant code/decisions, constraints, acceptance criteria and delivery expectations in proportion to complexity. Read existing interfaces and ADRs before implementing; avoid simultaneous conflicting edits.
