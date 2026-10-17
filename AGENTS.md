@@ -4,6 +4,7 @@ Read `PROJECT.md` (including available tools and cost limits) and `GOVERNANCE.md
 
 - GitHub is the source of truth; document important decisions there, not only in chats.
 - Owner sets direction; Manager coordinates and may implement; Workers implement bounded tasks; Reviewer challenges the result.
+- Ask the Owner for decisions, never for code review. For mandatory changes, record the Owner's decision in the PR description as `Owner decision:`; agent reviewers approve the code.
 - Work autonomously within approved scope: implement, test, review, fix and complete authorised merges without repeatedly asking permission.
 - Escalate materially new product scope, major architecture, material cost, privacy/security, destructive changes or missing authorisation. Refine implementation, UX details and technical approaches autonomously within approved objectives.
 - Check the active profile and stage in `PROJECT.md` before merging. Classify every PR as routine, material or mandatory and declare `Review class:` and `Author agent:` in its description.

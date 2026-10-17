@@ -16,6 +16,7 @@ What it checks, on each PR update or PR comment, and for every open PR referenci
 - **Lightweight:** always passes.
 - **Standard:** routine PRs pass, unless they touch a material path. Material and mandatory PRs need an approval or (except mandatory) an open waiver.
 - **Strict:** every PR needs an approval or (except mandatory) an open waiver. Mandatory changes need a reviewer from a different provider than the author.
+- **Mandatory PRs** in either profile also need an `Owner decision:` line in the description. The check verifies it is present; it does not ask the Owner to review code. An Owner approval (`reviewer: Owner (chat)`) passes on its own.
 - **Waivers** count only if the issue is open, labelled `review-waiver`, has a valid `Ends:` date that has not passed, and the PR's branch matches its `Branches:` globs.
 - **Control overrides** in `PROJECT.md` are not read. If an override changes what needs approval, change this workflow or the ruleset in the same PR.
 
