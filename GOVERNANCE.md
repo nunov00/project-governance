@@ -21,7 +21,7 @@ The active profile is recorded in `PROJECT.md`. A profile is a preset of the con
 | Who may approve | — | An agent other than the author, or the Owner | An agent other than the author (different provider for mandatory changes), or the Owner |
 | Copilot PR review | Optional, advisory | Recommended, advisory | Recommended; substantive findings resolved |
 | Required CI checks | None; run focused tests locally | Tests and build | Tests, build and security checks |
-| Mandatory-class changes | Owner decision recorded | Agent approval and Owner decision recorded | Different-provider agent approval and Owner decision recorded |
+| Mandatory-class changes | Owner decision recorded | Agent approval and Owner decision recorded, unless explicitly approved by the Owner | Different-provider agent approval and Owner decision recorded, unless explicitly approved by the Owner |
 | Waivers | Not needed | Allowed | Allowed |
 | Release | Flexible, verified | Green checks before production | Green checks and explicit Owner release approval |
 | Records | Brief PR notes | Significant decisions documented | Formal risk, decision and review trail |
