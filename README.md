@@ -16,7 +16,7 @@ A small, reusable governance template for projects developed with human and AI c
 
 ## Adopt in an existing project
 
-1. Copy `PROJECT.md`, `AGENTS.md`, `GOVERNANCE.md` and `templates/` into the repository.
+1. Copy `PROJECT.md`, `AGENTS.md`, `GOVERNANCE.md`, `.github/workflows/privacy.yml` and `templates/` into the repository.
 2. Fill in `PROJECT.md`, choosing the profile that matches the protections the repository **actually has today**, not the one you want.
 3. Ask the Manager to list the gaps to the target profile, then close them in one profile-transition PR.
 
@@ -41,6 +41,7 @@ The Owner approves, bypasses and grants waivers in chat; the agent records each 
 - **[PROJECT.md](PROJECT.md)**: editable settings, stage, active profile, overrides and profile history.
 - **[AGENTS.md](AGENTS.md)**: short instructions for AI contributors.
 - **[GOVERNANCE.md](GOVERNANCE.md)**: roles, controls per profile, change classes, approvals, waivers and GitHub settings.
+- **[.github/workflows/privacy.yml](.github/workflows/privacy.yml)**: the privacy check, active in every profile; it blocks PRs that add personal emails or secrets ([GOVERNANCE.md → Personal data and secrets](GOVERNANCE.md#personal-data-and-secrets)).
 - **[templates/github/](templates/github/README.md)**: the approval check workflow, inactive until copied into `.github/workflows/`.
 - **README.md**: this quick-start guide.
 

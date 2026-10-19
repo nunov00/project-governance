@@ -4,7 +4,7 @@
 - **Purpose:** [one sentence]
 - **Owner:** [name]
 - **Manager:** ChatGPT (or designated manager)
-- **Governance template:** v0.2
+- **Governance template:** v0.3
 - **Stage:** PoC
 - **Governance profile:** Lightweight
 - **Technology:** [stack]
