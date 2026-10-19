@@ -75,6 +75,18 @@ expect "email in a binary file's name fails" 1 1 "jane.doe"
 new_repo; echo x > a.txt; git add -A; git "${OK[@]}" commit -qm a; git mv a.txt "$EMAIL.txt"; git "${OK[@]}" commit -qm mv
 expect "email in a renamed file's name fails" 1 1 "jane.doe"
 
+new_repo; echo "\"a\": \"$EMAIL\"" > package-lock.json; git add -A; git "${OK[@]}" commit -qm lock
+git mv package-lock.json published.md; git "${OK[@]}" commit -qm mv
+expect "email moved out of a lockfile by a rename fails" 1 1 "jane.doe"
+
+new_repo; echo "\"a\": \"$EMAIL\"" > package-lock.json; git add -A; git "${OK[@]}" commit -qm lock
+git mv package-lock.json sub/package-lock.json 2>/dev/null || { mkdir sub; git mv package-lock.json sub/; }; git "${OK[@]}" commit -qm mv
+expect "lockfile renamed to another lockfile still passes" 1 0
+
+new_repo; echo "contact $EMAIL" > a.txt; git add -A; git "${OK[@]}" commit -qm a; git rm -q a.txt; git "${OK[@]}" commit -qm d
+blob=$(git rev-parse HEAD~1:a.txt); rm -f ".git/objects/${blob:0:2}/${blob:2}"
+expect "git error during the scan fails, address not printed" 1 1 "jane.doe"
+
 new_repo; echo x > b.txt; git add -A; git "${OK[@]}" commit -qm x -m "Co-authored-by: J <$EMAIL>"
 expect "email in a commit message fails" 1 1 "jane.doe"
 
