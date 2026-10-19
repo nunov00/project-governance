@@ -23,3 +23,7 @@ What it checks, on each PR update or PR comment, and for every open PR referenci
 An approval counts only if it names the current head commit, the author agent declared in the PR, and a different reviewer (not Copilot). Owner approvals given in chat are recorded by the agent as `reviewer: Owner (chat)`; a bypass goes through the ruleset.
 
 Limits: profile and material paths are read from the base branch, so a PR cannot loosen its own gate. Comments and issues all come from the Owner's account, so names are self-declared; the check catches mistakes, not deliberate misuse. There is no scheduled run, so a waiver passing its end date does not by itself turn PRs red; before merging under a waiver, re-run this check and confirm it passes (GOVERNANCE.md → Waivers and bypasses). Closing, editing or unlabelling a waiver re-checks the open PRs that reference it. Each run is a few seconds of Actions time, triggered only by PR events, PR comments and changes to waiver issues.
+
+## Privacy check self-test
+
+`privacy-check-selftest.sh` runs the steps of `.github/workflows/privacy.yml` against throwaway repositories with synthetic data: placeholders pass, while a personal commit email, an address added then deleted or replaced, an address in a file name or commit message, a token and a UUID-shaped secret all fail, without printing the value. Run it after changing the workflow: `templates/github/privacy-check-selftest.sh [path/to/gitleaks]`.
