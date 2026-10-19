@@ -8,7 +8,7 @@ A small, reusable governance template for projects developed with human and AI c
 2. Edit **[PROJECT.md](PROJECT.md)**: name, purpose, owner, stage, technology, checks, deployment and available tools/budget. **Lightweight** is the default.
 3. Ask your AI manager or developer to read **[AGENTS.md](AGENTS.md)** and **[GOVERNANCE.md](GOVERNANCE.md)** before making changes.
 4. Optionally enable **automatic GitHub Copilot code reviews** (Settings → Rules → Rulesets, or the Copilot code-review settings). It is advisory in every profile.
-5. Apply the GitHub settings for your profile ([GOVERNANCE.md → GitHub settings per profile](GOVERNANCE.md#github-settings-per-profile)), including `privacy` as a required status check in every profile. **Template files do not copy rulesets or enable Copilot.**
+5. Apply the GitHub settings for your profile ([GOVERNANCE.md → GitHub settings per profile](GOVERNANCE.md#github-settings-per-profile)), including `privacy` as a required status check in every profile. **Template files do not copy rulesets or enable Copilot.** If an agent can't change the branch rules, it tells the Owner which rule to add and where.
 
 **Suggested starting prompt:**
 
@@ -18,7 +18,7 @@ A small, reusable governance template for projects developed with human and AI c
 
 1. Copy `PROJECT.md`, `AGENTS.md`, `GOVERNANCE.md`, `.github/workflows/privacy.yml` and `templates/` into the repository.
 2. Fill in `PROJECT.md`, choosing the profile that matches the protections the repository **actually has today**, not the one you want.
-3. Make `privacy` a required status check on the default branch once it has run on a first PR.
+3. Make `privacy` a required status check on the default branch once it has run on a first PR. If you can't change the branch rules, tell the Owner which rule to add and where.
 4. Ask the Manager to list the gaps to the target profile, then close them in one profile-transition PR.
 
 ## Choose a profile

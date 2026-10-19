@@ -151,7 +151,7 @@ Template files do not copy rulesets or enable Copilot (the `privacy` workflow in
 | Bypass list | — | Owner (repository admin) | Owner (repository admin) |
 | Automatic Copilot review | Optional | Recommended | Recommended |
 
-`privacy` is a required check in every profile, so a PR that fails it cannot be merged. Add it once it has run on a first PR, so GitHub suggests its exact name. Required checks also stop direct pushes to the default branch, so changes go through a PR even in Lightweight. GitHub's free plan does not enforce rulesets on private repositories: there the check still runs and shows its result, but cannot block.
+`privacy` is a required check in every profile, so a PR that fails it cannot be merged. Add it once it has run on a first PR, so GitHub suggests its exact name. Required checks also stop direct pushes to the default branch, so changes go through a PR even in Lightweight. An agent that can't change the ruleset tells the Owner which rule to add and where, and doesn't report the setup as done. GitHub's free plan does not enforce rulesets on private repositories: there the check still runs and shows its result, but cannot block.
 
 GitHub's own "required approvals" stays at 0 because agents act through the Owner's account; the `governance/approval` check enforces the comment convention instead.
 
