@@ -66,6 +66,15 @@ expect "email added then replaced fails" 1 1 "jane.doe"
 new_repo; echo x > "$EMAIL.txt"; git add -A; git "${OK[@]}" commit -qm f
 expect "email in a file name fails, name not printed" 1 1 "jane.doe"
 
+new_repo; : > "$EMAIL.txt"; git add -A; git "${OK[@]}" commit -qm f
+expect "email in an empty file's name fails" 1 1 "jane.doe"
+
+new_repo; printf '\0\1' > "$EMAIL.bin"; git add -A; git "${OK[@]}" commit -qm f
+expect "email in a binary file's name fails" 1 1 "jane.doe"
+
+new_repo; echo x > a.txt; git add -A; git "${OK[@]}" commit -qm a; git mv a.txt "$EMAIL.txt"; git "${OK[@]}" commit -qm mv
+expect "email in a renamed file's name fails" 1 1 "jane.doe"
+
 new_repo; echo x > b.txt; git add -A; git "${OK[@]}" commit -qm x -m "Co-authored-by: J <$EMAIL>"
 expect "email in a commit message fails" 1 1 "jane.doe"
 
@@ -82,8 +91,14 @@ expect "added line posing as a file header fails" 1 1 "jane.doe"
 
 new_repo; git checkout -qb side; echo s > s.txt; git add -A; git "${OK[@]}" commit -qm side
 git checkout -q -; echo m > m.txt; git add -A; git "${OK[@]}" commit -qm main
-git "${OK[@]}" merge -q --no-commit side >/dev/null; echo "contact $EMAIL" > evil.txt; git add -A; git "${OK[@]}" commit -qm merge
+git "${OK[@]}" merge -q --no-commit side >/dev/null 2>&1; echo "contact $EMAIL" > evil.txt; git add -A; git "${OK[@]}" commit -qm merge
 expect "email added only by a merge commit fails" 1 1 "jane.doe"
+
+new_repo; b0=$(git rev-parse HEAD)
+for b in s1 s2 top; do git checkout -qb $b "$b0"; echo $b > $b.txt; git add -A; git "${OK[@]}" commit -qm $b; done
+git "${OK[@]}" merge -q --no-commit s1 s2 >/dev/null 2>&1; echo "contact $EMAIL" > evil.txt; git add -A; git "${OK[@]}" commit -qm octopus
+[ "$(git rev-list --parents -n 1 HEAD | wc -w)" = 4 ] || echo "FAIL  octopus fixture has the wrong parent count"
+expect "merge with three parents is refused" 1 1 "jane.doe"
 
 new_repo; printf 'GITHUB_TOKEN=%s\n' "$TOKEN" > c.env; git add -A; git "${OK[@]}" commit -qm s
 expect "secret fails, value redacted" 2 1 "$TOKEN"
