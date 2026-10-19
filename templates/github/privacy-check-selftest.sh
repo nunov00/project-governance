@@ -6,14 +6,13 @@
 # optional repo-specific gitleaks cases in .github/privacy-selftest-cases, one per line:
 #   <0 to pass | 1 to fail>|<path>|<line>   ({UUID} becomes a synthetic UUID and {Q} a
 #   double quote, so the cases file itself does not look like a secret)
+# The secret cases run the workflow's own gitleaks command with the given binary.
 # Needs git 2.36+, python3 with PyYAML, and optionally gitleaks for the secret cases.
 set -u
 ROOT=$(cd "${1:-$(dirname "$0")/../..}" && pwd)
-GITLEAKS=${2:-$(command -v gitleaks || true)}
+GITLEAKS=${2:-$(command -v gitleaks || true)}; [ -z "$GITLEAKS" ] || GITLEAKS=$(realpath "$GITLEAKS")
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
-CONFIG=()
-[ -f "$ROOT/.gitleaks.toml" ] && { cp "$ROOT/.gitleaks.toml" "$WORK/gitleaks.toml"; CONFIG=(--config "$WORK/gitleaks.toml"); }
 
 python3 - "$ROOT/.github/workflows/privacy.yml" "$WORK" <<'EOF'
 import sys, yaml
@@ -21,8 +20,12 @@ w = yaml.safe_load(open(sys.argv[1]))
 with open(sys.argv[2] + "/env.sh", "w") as f:
     for k, v in w["env"].items():
         f.write("export %s='%s'\n" % (k, v))
-for i, s in enumerate(w["jobs"]["privacy"]["steps"][1:]):
-    open("%s/step%d.sh" % (sys.argv[2], i), "w").write(s["run"])
+steps = [s["run"] for s in w["jobs"]["privacy"]["steps"][1:]]
+# The secret step without its download: only the workflow's own gitleaks command lines.
+steps[2] = "".join(l for l in steps[2].splitlines(True) if '"$RUNNER_TEMP/gitleaks" ' in l)
+assert steps[2], "gitleaks command not found in the workflow"
+for i, s in enumerate(steps):
+    open("%s/step%d.sh" % (sys.argv[2], i), "w").write(s)
 EOF
 . "$WORK/env.sh"
 
@@ -39,10 +42,11 @@ expect() {
   BASE=$(git rev-list --max-parents=0 HEAD); HEAD=$(git rev-parse HEAD); RUNNER_TEMP=$(mktemp -d -p "$WORK")
   if [ "$2" = 2 ]; then
     [ -n "$GITLEAKS" ] || { echo "skip  $1 (no gitleaks)"; return; }
-    out=$("$GITLEAKS" git . "${CONFIG[@]}" --log-opts="$BASE..$HEAD" --redact --no-banner 2>&1); rc=$?
-  else
-    out=$(bash -e "$WORK/step$2.sh" 2>&1); rc=$?
+    # gitleaks reads .gitleaks.toml from the checkout, as in the workflow; it is not committed.
+    ln -s "$GITLEAKS" "$RUNNER_TEMP/gitleaks"
+    [ -f "$ROOT/.gitleaks.toml" ] && { cp "$ROOT/.gitleaks.toml" .; echo .gitleaks.toml >> .git/info/exclude; }
   fi
+  out=$(bash -e "$WORK/step$2.sh" 2>&1); rc=$?
   [ "$rc" -ne 0 ] && rc=1
   if [ "$rc" = "$3" ] && { [ -z "${4:-}" ] || ! grep -qF "$4" <<<"$out"; }; then echo "pass  $1"
   else echo "FAIL  $1 (exit $rc, expected $3)"; echo "$out" | sed 's/^/      /'; fails=$((fails + 1)); fi
@@ -114,6 +118,11 @@ expect "merge with three parents is refused" 1 1 "jane.doe"
 
 new_repo; printf 'GITHUB_TOKEN=%s\n' "$TOKEN" > c.env; git add -A; git "${OK[@]}" commit -qm s
 expect "secret fails, value redacted" 2 1 "$TOKEN"
+
+new_repo; git checkout -qb side; echo s > s.txt; git add -A; git "${OK[@]}" commit -qm side
+git checkout -q -; echo m > m.txt; git add -A; git "${OK[@]}" commit -qm main
+git "${OK[@]}" merge -q --no-commit side >/dev/null 2>&1; printf 'GITHUB_TOKEN=%s\n' "$TOKEN" > c.env; git add -A; git "${OK[@]}" commit -qm merge
+expect "secret added only by a merge commit fails" 2 1 "$TOKEN"
 
 new_repo; printf 'api_key = "%s"\n' "$UUID" > config.txt; git add -A; git "${OK[@]}" commit -qm u
 expect "UUID-shaped secret fails" 2 1
