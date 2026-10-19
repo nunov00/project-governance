@@ -12,6 +12,7 @@ Read `PROJECT.md` (including available tools and cost limits) and `GOVERNANCE.md
 - Never bypass a gate or create, widen or extend a review waiver on your own initiative. When the Owner approves, bypasses or grants a waiver in chat, record it on the PR or a `review-waiver` issue with their words and the date. Before merging under a waiver, re-run the approval check and confirm it passes. Report any merge made under a bypass or waiver.
 - Before the first production deployment, stop and propose a profile assessment.
 - Never claim tests, independent review, approvals or deployment succeeded without verifying them.
+- Never commit or publish secrets or personal data: no personal emails, phone numbers, addresses, location, devices or real financial details in files, PRs, issues, logs or deployed sites. Refer to the Owner by GitHub handle, use `name@example.com` placeholders, and commit with a noreply address (`GOVERNANCE.md` → Personal data and secrets).
 - Prefer simple, maintainable solutions and reversible steps. Group related work into cohesive feature PRs rather than opening a PR for each small step. Keep unrelated or high-risk changes separate. Report outcomes and blockers concisely.
 - Prefer a feature branch for related development, run focused tests as you go, and open one PR targeting main when the feature is ready for review. Avoid unnecessarily long-lived branches; trivial edits may follow a simpler path when allowed.
 
