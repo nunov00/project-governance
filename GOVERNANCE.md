@@ -16,7 +16,7 @@ Repositories, PRs, issues, CI logs and deployed sites can become public, and git
 - Data a site publishes must not carry personal data even when the repository is private.
 - If personal data or a secret is found, tell the Owner at once. Rotate a leaked secret first. Removing data from history means rewriting it, which is a mandatory change.
 
-**Enforcement:** `.github/workflows/privacy.yml` runs on every PR and fails if a PR commit uses a non-noreply email, if any PR commit, two-parent merges included (larger merges are refused), adds a real email address to a file, a file name or a commit message (checked commit by commit, since history keeps what a later commit removes), or if gitleaks finds a secret in the PR's commits. Its log names commits and counts only, never paths or addresses. It is a heuristic, not proof of absence. A repository-specific `.gitleaks.toml` may allowlist a known false positive only for a named file AND an exact line shape, with a comment saying why, and list passing and failing lines for it in `.github/privacy-selftest-cases` so the self-test (`templates/github/privacy-check-selftest.sh` in nunov00/project-governance) proves the exception is narrow; never allowlist a value pattern globally. **Owner account settings** (once, in GitHub → Settings → Emails): "Keep my email address private" and "Block command line pushes that expose my email".
+**Enforcement:** `.github/workflows/privacy.yml` runs on every PR and fails if a PR commit uses a non-noreply email, if any PR commit, two-parent merges included (larger merges are refused), adds a real email address to a file, a file name or a commit message (checked commit by commit, since history keeps what a later commit removes), or if gitleaks finds a secret in the PR's commits. It is a required status check in every profile (**GitHub settings per profile**). Its log names commits and counts only, never paths or addresses. It is a heuristic, not proof of absence. A repository-specific `.gitleaks.toml` may allowlist a known false positive only for a named file AND an exact line shape, with a comment saying why, and list passing and failing lines for it in `.github/privacy-selftest-cases` so the self-test (`templates/github/privacy-check-selftest.sh` in nunov00/project-governance) proves the exception is narrow; never allowlist a value pattern globally. **Owner account settings** (once, in GitHub → Settings → Emails): "Keep my email address private" and "Block command line pushes that expose my email".
 
 ## Profiles and controls
 The active profile is recorded in `PROJECT.md`. A profile is a preset of the controls below, and this table is the single definition of what each profile requires.
@@ -146,10 +146,12 @@ Template files do not copy rulesets or enable Copilot (the `privacy` workflow in
 |---|---|---|---|
 | Block force pushes and deletion | Yes | Yes | Yes |
 | Require a pull request | Optional | Yes (0 required GitHub approvals) | Yes (0 required GitHub approvals) |
-| Required status checks | `privacy` recommended | CI jobs + `privacy` + `governance/approval` | CI jobs + `privacy` + `governance/approval` |
+| Required status checks | `privacy` | CI jobs + `privacy` + `governance/approval` | CI jobs + `privacy` + `governance/approval` |
 | Require branches up to date | — | Optional | Yes |
 | Bypass list | — | Owner (repository admin) | Owner (repository admin) |
 | Automatic Copilot review | Optional | Recommended | Recommended |
+
+`privacy` is a required check in every profile, so a PR that fails it cannot be merged. Add it once it has run on a first PR, so GitHub suggests its exact name. Required checks also stop direct pushes to the default branch, so changes go through a PR even in Lightweight. GitHub's free plan does not enforce rulesets on private repositories: there the check still runs and shows its result, but cannot block.
 
 GitHub's own "required approvals" stays at 0 because agents act through the Owner's account; the `governance/approval` check enforces the comment convention instead.
 

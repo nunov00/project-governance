@@ -8,17 +8,18 @@ A small, reusable governance template for projects developed with human and AI c
 2. Edit **[PROJECT.md](PROJECT.md)**: name, purpose, owner, stage, technology, checks, deployment and available tools/budget. **Lightweight** is the default.
 3. Ask your AI manager or developer to read **[AGENTS.md](AGENTS.md)** and **[GOVERNANCE.md](GOVERNANCE.md)** before making changes.
 4. Optionally enable **automatic GitHub Copilot code reviews** (Settings → Rules → Rulesets, or the Copilot code-review settings). It is advisory in every profile.
-5. Apply the GitHub settings for your profile ([GOVERNANCE.md → GitHub settings per profile](GOVERNANCE.md#github-settings-per-profile)). **Template files do not copy rulesets or enable Copilot.**
+5. Apply the GitHub settings for your profile ([GOVERNANCE.md → GitHub settings per profile](GOVERNANCE.md#github-settings-per-profile)), including `privacy` as a required status check in every profile. **Template files do not copy rulesets or enable Copilot.**
 
 **Suggested starting prompt:**
 
-> Read PROJECT.md, AGENTS.md and GOVERNANCE.md. Help me initialise this project with Lightweight governance unless the risks justify more. Identify only essential missing decisions, propose minimal checks and GitHub protections, and proceed within the agreed scope.
+> Read PROJECT.md, AGENTS.md and GOVERNANCE.md. Help me initialise this project with Lightweight governance unless the risks justify more. Identify only essential missing decisions, propose minimal checks and GitHub protections (always including `privacy` as a required check), and proceed within the agreed scope.
 
 ## Adopt in an existing project
 
 1. Copy `PROJECT.md`, `AGENTS.md`, `GOVERNANCE.md`, `.github/workflows/privacy.yml` and `templates/` into the repository.
 2. Fill in `PROJECT.md`, choosing the profile that matches the protections the repository **actually has today**, not the one you want.
-3. Ask the Manager to list the gaps to the target profile, then close them in one profile-transition PR.
+3. Make `privacy` a required status check on the default branch once it has run on a first PR.
+4. Ask the Manager to list the gaps to the target profile, then close them in one profile-transition PR.
 
 ## Choose a profile
 
